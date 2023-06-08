@@ -45,7 +45,7 @@ function Event() {
         }
     }
 
-    const navigateToSignUpForm = (id) => {
+    function navigateToSignUpForm(id)  {
         console.log("navigating/"+id);
         navigate('/signUp/' + id, { replace: true });
     };
@@ -132,7 +132,7 @@ function Event() {
                                     <td>{ev.count}</td>
 
                                     <td>
-                                        <button class="btn btn-light" onClick={navigateToSignUpForm(ev.id)}>Sign Up</button>
+                                        <button class="btn btn-light" onClick={() => navigateToSignUpForm(ev.id)}>Sign Up</button>
                                     </td>
                                 </tr>
                             </tbody>

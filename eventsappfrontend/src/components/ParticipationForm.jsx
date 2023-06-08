@@ -1,14 +1,16 @@
 import React from 'react';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from 'react-router-dom';
 import axios from "axios";
-
+import { useNavigate } from 'react-router-dom';
 
 function ParticipationForm() {
     const { id } = useParams()
     const [firstName, setName] = useState("");
     const [lastName, setLastName] = useState("");
     const [idCode, setCode] = useState("");
+    const navigate = useNavigate();
+
 
     async function save(event) {
 
@@ -29,7 +31,8 @@ function ParticipationForm() {
             setName("");
             setLastName("");
             setCode("");
-
+            console.log("hiding form/");
+            navigate('/', { replace: true });
         } catch (err) {
             alert(err);
         }
