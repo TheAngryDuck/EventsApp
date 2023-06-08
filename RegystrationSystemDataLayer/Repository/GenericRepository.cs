@@ -9,10 +9,11 @@ namespace EventAppDataLayer.Repository
         {
             _context = context;
         }
-        public void Add(T entity)
+        public T Add(T entity)
         {
-            _context.Set<T>().Add(entity);
+          var result =  _context.Set<T>().Add(entity).Entity;
             _context.SaveChanges();
+            return result;
         }
         public IEnumerable<T> GetAll()
         {
@@ -22,9 +23,10 @@ namespace EventAppDataLayer.Repository
         {
             return _context.Set<T>().Find(id);
         }
-        public void Remove(T entity)
+        public void Remove(Guid id)
         {
-            _context.Set<T>().Remove(entity);
+           var ob =  _context.Set<T>().Find(id);
+            _context.Set<T>().Remove(ob);
             _context.SaveChanges();
         }
 

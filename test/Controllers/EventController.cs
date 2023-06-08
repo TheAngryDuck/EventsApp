@@ -38,9 +38,9 @@ namespace EventsAppServer.Controllers
 
         // POST api/<EventController>
         [HttpPost]
-        public void Post([FromBody] EventDto dto)
+        public Guid Post([FromBody] EventDto dto)
         {
-            _eventService.addEvent(dto);
+           return _eventService.addEvent(dto);
         }
 
         // PUT api/<EventController>/5
@@ -51,10 +51,10 @@ namespace EventsAppServer.Controllers
         }
 
         // DELETE api/<EventController>/5
-        [HttpDelete]
-        public void Delete(EventDto dto)
+        [HttpDelete("{id}")]
+        public void Delete(Guid id)
         {
-            _eventService.removeEvent(dto);
+            _eventService.removeEvent(id);
         }
     }
 }

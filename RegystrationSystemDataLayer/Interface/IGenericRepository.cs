@@ -5,7 +5,7 @@
         T GetById(Guid id);
         IEnumerable<T> GetAll();
         void Update(T entity);
-        void Add(T entity);
-        void Remove(T entity);
+        T Add(T entity);
+        void Remove(Guid id);
     }
 }

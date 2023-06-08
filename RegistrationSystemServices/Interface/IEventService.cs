@@ -5,8 +5,8 @@ namespace EventAppDataLayer.Interface
     public interface IEventService
     {
         IEnumerable<EventDto> getEvents();
-        public void addEvent(EventDto eventOb);
-        public void removeEvent(EventDto eventOb);
+        public Guid addEvent(EventDto eventOb);
+        public void removeEvent(Guid id);
         public void updateEvent(EventDto eventOb);
         public EventDto getEventById(Guid id);
 

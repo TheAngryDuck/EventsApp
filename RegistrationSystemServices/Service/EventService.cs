@@ -26,15 +26,16 @@ namespace EventAppDataLayer.Service
             return result;
         }
 
-        public void addEvent(EventDto dto)
+        public Guid addEvent(EventDto dto)
         {
 
-            _eventRepository.Add(_eventMapper.MapFromDto(dto));
+           var entity = _eventRepository.Add(_eventMapper.MapFromDto(dto));
+            return entity.Id;
         }
 
-        public void removeEvent(EventDto dto)
+        public void removeEvent(Guid id)
         {
-            _eventRepository.Remove(_eventMapper.MapFromDto(dto));
+            _eventRepository.Remove(id);
         }
 
         public void updateEvent(EventDto dto)
