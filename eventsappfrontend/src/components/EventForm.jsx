@@ -1,57 +1,49 @@
 import React from 'react';
-import { useState } from "react";
-import { useParams } from 'react-router-dom';
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
 
-function ParticipationForm() {
-    const { id } = useParams()
-    const [firstName, setName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [idCode, setCode] = useState("");
-    const navigate = useNavigate();
+function EventForm() {
 
+    const [evName, setName] = useState("");
+    const [date, setDate] = useState("");
+    const [count, setCount] = useState(1);
 
     async function save(event) {
 
         event.preventDefault();
         try {
-            const result =  await axios.post("http://localhost:5173/api/Participant", {
+            await axios.post("http://localhost:5173/api/Event", {
 
-                name: firstName,
-                lastName: lastName,
-                idCode: idCode,
-            });
-            await axios.post("http://localhost:5173/api/ParticipantInEvent", {
+                name: evName,
+                date: date,
+                count: count,
 
-                participantId: result.data,
-                eventId: id,
             });
-            alert("Signed Up Successfully");
+            alert("Event created Successfully");
             setName("");
-            setLastName("");
-            setCode("");
-            navigate(-1);
+            setDate("");
+            setCount(1);
+
+            window.location.reload(false);
         } catch (err) {
             alert(err);
         }
     }
-
     return (
-        <div align="center">
-      <h1>Sign Up!</h1>
-            <div class="row justify-content-center main-row">
+      <div align="center">
+        <div class="row justify-content-center main-row">
+          <h1>Create Event</h1>
                     <form>
-                    <table>
-                        <tbody>
+                        <table>
+                            <tbody>
                                 <tr>
-                                    <td><label>First Name</label></td>
+                                    <td><label>Event Name</label></td>
                                     <td>
                                         <input
                                             type="text"
                                             class="form-control"
-                                        id="firstName"
-                                        value={firstName}
+                                            id="evName"
+                                            value={evName}
                                             onChange={(event) => {
                                                 setName(event.target.value);
                                             }}
@@ -59,46 +51,47 @@ function ParticipationForm() {
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><label>Last Name</label></td>
+                                    <td><label>Date</label></td>
                                     <td>
                                         <input
                                             type="text"
                                             class="form-control"
-                                        id="lastName"
-                                        value={lastName}
+                                            id="date"
+                                            value={date}
                                             onChange={(event) => {
-                                                setLastName(event.target.value);
+                                                setDate(event.target.value);
                                             }}
                                             />
                                     </td>
                                 </tr>
                             <tr>
-                                <td><label>Id Code</label></td>
+                                <td><label>Participant Count</label></td>
                                     <td>
                                         <input
-                                            type="text"
+                                            type="number"
                                             class="form-control"
-                                        id="idCode"
-                                        value={idCode}
+                                            id="count"
+                                            value={count}
+                                            min="1"
                                             onChange={(event) => {
-                                                setCode(event.target.value);
+                                                setCount(event.target.value);
                                             }}
                                                     />
                                     </td>
                             </tr>
-                        </tbody>
+                            </tbody>
+                            
                         </table>
                             
                         <div>
                             <button class="btn btn-primary mt-4" onClick={save}>
-                                Sign In
+                                Create
                             </button>
                         </div>
                     </form>
             </div>
         </div>
-
-  );
+            );
 }
 
-export default ParticipationForm;
+export default EventForm;

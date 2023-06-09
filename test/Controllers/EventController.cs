@@ -1,7 +1,5 @@
 ﻿using EventAppDataLayer.Dto;
-using EventAppDataLayer.Entity;
 using EventAppDataLayer.Interface;
-using EventAppDataLayer.Service;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -31,30 +29,47 @@ namespace EventsAppServer.Controllers
 
         // GET api/<EventController>/5
         [HttpGet("{id}")]
-        public EventDto Get(Guid id)
+        public ActionResult<EventDto> Get(Guid id)
         {
-            return _eventService.getEventById(id);
+            if (id != Guid.Empty) { 
+                return Ok(_eventService.getEventById(id));
+            }
+            return BadRequest();
         }
 
         // POST api/<EventController>
         [HttpPost]
-        public Guid Post([FromBody] EventDto dto)
+        public ActionResult<Guid> Post([FromBody] EventDto dto)
         {
-           return _eventService.addEvent(dto);
+            if (!string.IsNullOrWhiteSpace(dto.Name) && !string.IsNullOrWhiteSpace(dto.Date))
+            {
+                return Ok(_eventService.addEvent(dto));
+            }
+           return BadRequest(dto);
         }
 
         // PUT api/<EventController>/5
         [HttpPut]
-        public void Put([FromBody] EventDto dto)
+        public ActionResult Put([FromBody] EventDto dto)
         {
+            if (!string.IsNullOrWhiteSpace(dto.Name) && !string.IsNullOrWhiteSpace(dto.Date))
+            { 
             _eventService.updateEvent(dto);
+            return Ok();
+            }
+            return BadRequest(dto);
         }
 
         // DELETE api/<EventController>/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public ActionResult Delete(Guid id)
         {
-            _eventService.removeEvent(id);
+            if (id != Guid.Empty)
+            {
+                _eventService.removeEvent(id);
+                return Ok();
+            }
+            return BadRequest();
         }
     }
 }

@@ -29,30 +29,48 @@ namespace EventsAppServer.Controllers
 
         // GET api/<ParticipantController>/5
         [HttpGet("{id}")]
-        public ParticipantDto Get(Guid id)
+        public ActionResult<ParticipantDto> Get(Guid id)
         {
-            return _participantService.getParticipantById(id);
+            if (id != Guid.Empty)
+            {
+                return Ok(_participantService.getParticipantById(id));
+            }
+            return BadRequest();
         }
 
         // POST api/<ParticipantController>
         [HttpPost]
-        public Guid Post([FromBody] ParticipantDto dto)
+        public ActionResult<Guid> Post([FromBody] ParticipantDto dto)
         {
-           return  _participantService.addParticipant(dto);
+            if (!string.IsNullOrWhiteSpace(dto.Name) && !string.IsNullOrWhiteSpace(dto.LastName) && !string.IsNullOrWhiteSpace(dto.IdCode))
+            {
+                return Ok(_participantService.addParticipant(dto));
+            }
+            return BadRequest(dto);
         }
 
         // PUT api/<ParticipantController>/5
         [HttpPut]
-        public void Put([FromBody] ParticipantDto dto)
+        public ActionResult Put([FromBody] ParticipantDto dto)
         {
-            _participantService.updateParticipant(dto);
+            if (!string.IsNullOrWhiteSpace(dto.Name) && !string.IsNullOrWhiteSpace(dto.LastName) && !string.IsNullOrWhiteSpace(dto.IdCode))
+            {
+                _participantService.updateParticipant(dto);
+                return Ok();
+            }
+            return BadRequest(dto);
         }
 
         // DELETE api/<ParticipantController>/5
         [HttpDelete]
-        public void Delete(Guid id)
+        public ActionResult Delete(Guid id)
         {
-            _participantService.removeParticipant(id);
+            if (id != Guid.Empty)
+            {
+                _participantService.removeParticipant(id);
+                return Ok();
+            }
+            return BadRequest();
         }
     }
 }

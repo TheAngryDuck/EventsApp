@@ -9,12 +9,24 @@ namespace EventsAppServer.Controllers
     [ApiController]
     public class ValidationController : ControllerBase
     {
+        private IConfiguration _configuration;
 
-        // GET api/<ValidationController>/5
-        [HttpGet]
-        public int Validate([FromBody] ValidationDto dto)
+        public ValidationController(IConfiguration configuration) { 
+            _configuration = configuration;
+        }
+
+        // POST api/<ValidationController>/5
+        [HttpPost]
+        public ActionResult Validate([FromBody] ValidationDto dto)
         {
-            return StatusCodes.Status200OK;
+            var correctEmail = _configuration.GetSection("LoginData").GetSection("email").Value;
+            var correctPassword = _configuration.GetSection("LoginData").GetSection("password").Value;
+            if (dto.Email.Equals(correctEmail) && (dto.Password.Equals(correctPassword)))
+            {
+                return Ok();
+            }
+            return Unauthorized();
+            
         }
     }
 }
